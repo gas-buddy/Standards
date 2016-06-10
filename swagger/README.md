@@ -24,6 +24,11 @@ PointOfInterest:
       type: string
 ```
 
+Identifiers
+===========
+Unique ids in all APIs should be treated as strings. Generally, we should not expose raw numeric identifiers to API consumers. This avoids people picking poor data types for storage and limits information disclosure such as the order
+of entity creation or total size of the collection.
+
 Paging
 ======
 Situations that may return many results should follow a common paging model wherever possible.
@@ -36,28 +41,23 @@ In a request:
           default: (choose a value)
           required: false
           type: integer
-          format: int32
         - name: page
           in: query
           description: The 0-based index of the page of results to retrieve (based on pageSize)
           required: false
           type: integer
-          format: int32
 ```
 
 In a response:
 ```
       page:
         type: integer
-        format: int32
         description: The 0-based index of this page of results
       page_size:
         type: integer
-        format: int32
         description: The number of results in a single page
       count:
         type: integer
-        format: int32
         description: The total number of results (not pages) available, if known      
 ```
 
