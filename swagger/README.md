@@ -31,34 +31,44 @@ of entity creation or total size of the collection.
 
 Paging
 ======
-Situations that may return many results should follow a common paging model wherever possible.
+Situations that may return many results should follow a common paging model.
+Not all paging situations are the same, and mainly the issue is around the rate of change in the
+underlying data. The general goal is to be able to specify a limited number of results and
+an offset into the result set. Since simple "page number/page size" paging can be expressed
+with limits and cursors, cursoring is the preferred API representation even if the backend
+implements it as simple offsets.
 
 In a request:
 ```
-        - name: page_size
+        - name: limit
           in: query
           description: The maximum number of results to return in one call
           default: (choose a value)
           required: false
           type: integer
-        - name: page
+          format: int32
+        - name: cursor
           in: query
-          description: The 0-based index of the page of results to retrieve (based on pageSize)
+          description: The server-provided cursor for the beginning of the result set. Omit for the "first page"
           required: false
-          type: integer
+          type: string
 ```
 
 In a response:
 ```
-      page:
-        type: integer
-        description: The 0-based index of this page of results
-      page_size:
-        type: integer
-        description: The number of results in a single page
+      cursor:
+        type: object
+        properties:
+          next:
+            type: string
+            description: The value that should be passed as cursor to retrieve the previous set of results
+          previous:
+            type: string
+            description: The value that should be passed as cursor to retrieve the next set of results
       count:
         type: integer
-        description: The total number of results (not pages) available, if known      
+        format: int32
+        description: The total number of results (not pages) available, if known
 ```
 
 Next and previous page links are nice, but aren't always possible (e.g. in POSTs without extra work).
