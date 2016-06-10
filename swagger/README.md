@@ -30,7 +30,7 @@ Situations that may return many results should follow a common paging model wher
 
 In a request:
 ```
-        - name: pageSize
+        - name: page_size
           in: query
           description: The maximum number of results to return in one call
           default: (choose a value)
@@ -51,7 +51,7 @@ In a response:
         type: integer
         format: int32
         description: The 0-based index of this page of results
-      pageSize:
+      page_size:
         type: integer
         format: int32
         description: The number of results in a single page
