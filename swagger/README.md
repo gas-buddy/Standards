@@ -24,6 +24,47 @@ PointOfInterest:
       type: string
 ```
 
+Paging
+======
+Situations that may return many results should follow a common paging model wherever possible.
+
+In a request:
+```
+        - name: pageSize
+          in: query
+          description: The maximum number of results to return in one call
+          default: (choose a value)
+          required: false
+          type: integer
+          format: int32
+        - name: page
+          in: query
+          description: The 0-based index of the page of results to retrieve (based on pageSize)
+          required: false
+          type: integer
+          format: int32
+```
+
+In a response:
+```
+      page:
+        type: integer
+        format: int32
+        description: The 0-based index of this page of results
+      pageSize:
+        type: integer
+        format: int32
+        description: The number of results in a single page
+      count:
+        type: integer
+        format: int32
+        description: The total number of results (not pages) available, if known      
+```
+
+Next and previous page links are nice, but aren't always possible (e.g. in POSTs without extra work).
+If you can't provide next and previous links AND can't provide a count, you will need some
+boolean or similar to indicate whether there are additional results or not...
+
 Boilerplate
 ===========
 ```
