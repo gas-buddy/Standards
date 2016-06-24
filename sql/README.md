@@ -4,15 +4,15 @@ GasBuddy SQL Standards
 
 naming
 ========
-SQL views, indices, and stored procedures all being with a prefix which indicates their type. 
+SQL views, indices, and stored procedures all being with a prefix which indicates their type.
 Index names contain the name of the table followed by the columns in the index as well as other important information (e.g. "filtered", "covering", etc.). 
 Stored procedure names contain the table name, followed by the operation, followed by the version number.
 
 ```
 views: 		[dbo].[vw_station_with_prices]
 indexes: 	[dbo].[idx_members_id]
-stored procedure which an individual object as output: 	[dbo].[usp_members_get_by_id]
-stored procedure which a list of objects as output: 	[dbo].[usp_member_comments_list_by_member_id]
+stored procedure with an individual object as output: 	[dbo].[usp_members_get_by_id]
+stored procedure with a list of objects as output: 	[dbo].[usp_member_comments_list_by_member_id]
 versioning:	[dbo].[usp_member_comments_list_by_member_id_v2]
 ```
 
@@ -50,9 +50,11 @@ CREATE TABLE [dbo].[price_hist2](
 
 For stored procedures: Add description to the script.
 All SQL statements should end with semicolon(;).
-All the references to identifiers should contain the schema name.
+All the references to identifiers should include the schema name.
 Do not add database for local objects.
 Respect CASE used in identifiers and columns definition.
+Use a new line per column in the select.
+Commas are placed at the end of the column name.
 
 ```
 -- =============================================
@@ -69,14 +71,14 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	SELECT id
-		  ,display_name
-		  ,fuel_group_id
-		  ,octane_id
-		  ,ethanol_id
-		  ,category_id
-	FROM [dbo].[fuel_products] WITH(NOLOCK)
-	WHERE id = @id;
+	SELECT		id,
+				display_name,
+				fuel_group_id,
+				octane_id,
+				ethanol_id,
+				category_id
+	FROM 		[dbo].[fuel_products] WITH(NOLOCK)
+	WHERE 		id = @id;
 
 END
 
@@ -85,8 +87,8 @@ END
 When joining, use aliases for the tables and identify all the columns with their corresponding alias.
 
 ```
-	SELECT		srdt.sm_id , 
-				srdt.rating_value ,
+	SELECT		srdt.sm_id, 
+				srdt.rating_value,
 				SUM(srdt.total_ratings) AS 'total_ratings'
 	FROM		[dbo].[station_rating_day_totals] srdt WITH (NOLOCK)
 	INNER JOIN	@sm_ids smids ON smids.id = srdt.sm_id
@@ -106,7 +108,8 @@ Before commit any change validate that your scripts are not causing errors/warni
 Warning	459		SQL71562: Procedure: [dbo].[usp_get_my_station_photos_pages] contains an unresolved reference to an object. Either the object does not exist or the reference is ambiguous because it could refer to any of the following objects: [Gasbuddy].[dbo].[station_master_photo].[sp]::[stationId] or [Gasbuddy].[dbo].[station_master_photo].[stationId].	C:\GasBuddyDBs\gb-sql-server-db\GBPhotos\dbo\Stored Procedures\usp_get_my_station_photos_pages.sql	46	18	GBPhotos
 
 ```
-	select      sp.stationId, count(*)
+	select      sp.stationId, 
+				count(*)
 	from		Gasbuddy..station_master_photo as sp with(nolock)
 	where		sp.unique_member_id = 3849
 	group by	sp.stationId
@@ -116,7 +119,8 @@ Warning	459		SQL71562: Procedure: [dbo].[usp_get_my_station_photos_pages] contai
 Fix: For external references we need to change the name of the database for the corresponding DB variable
 			
 ```
-	SELECT      sp.stationId, count(*)
+	SELECT      sp.stationId, 
+				count(*)
 	FROM		[$(Gasbuddy)].[dbo].[station_master_photo] as sp with(nolock)
 	WHERE		sp.unique_member_id = 3849
 	GROUP BY	sp.stationId
