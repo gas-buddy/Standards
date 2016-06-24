@@ -109,7 +109,7 @@ Warning	459		SQL71562: Procedure: [dbo].[usp_get_my_station_photos_pages] contai
 
 ```
 	select      sp.stationId, 
-				count(*)
+				count(*) as total
 	from		Gasbuddy..station_master_photo as sp with(nolock)
 	where		sp.unique_member_id = 3849
 	group by	sp.stationId
@@ -120,7 +120,7 @@ Fix: For external references we need to change the name of the database for the 
 			
 ```
 	SELECT      sp.stationId, 
-				count(*)
+				count(*) AS total
 	FROM		[$(Gasbuddy)].[dbo].[station_master_photo] as sp with(nolock)
 	WHERE		sp.unique_member_id = 3849
 	GROUP BY	sp.stationId
