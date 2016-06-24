@@ -10,7 +10,7 @@ Stored procedure names contain the table name, followed by the operation, follow
 
 ```
 views: 		[dbo].[vw_station_with_prices]
-indexes: 	[dbo].[ix_members_id]
+indexes: 	[dbo].[idx_members_id]
 stored procedure which an individual object as output: 	[dbo].[usp_members_get_by_id]
 stored procedure which a list of objects as output: 	[dbo].[usp_member_comments_list_by_member_id]
 versioning:	[dbo].[usp_member_comments_list_by_member_id_v2]
