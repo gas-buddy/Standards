@@ -28,7 +28,7 @@ SQL tables and view are plural, lower case, underscore separated.
 formatting
 =========
 All T-SQL reserved words are uppercase.
-All identifier should be delimited by square brackets.
+All identifiers should be delimited by square brackets.
 
 ```
 CREATE TABLE [dbo].[price_hist2](
@@ -131,7 +131,7 @@ Warning	891		SQL71558: The object reference [dbo].[MSA].[id] differs only by cas
 	WHERE		id = @areaID;
 ```
 
-Fix: Since ID was definned with upper case in MSA table:
+Fix: Since ID was defined with upper case in MSA table:
 			
 
 ```
