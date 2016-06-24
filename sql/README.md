@@ -49,7 +49,7 @@ CREATE TABLE [dbo].[price_hist2](
 ```
 
 For stored procedures: Add description to the script.
-All SQL statements should end with semmicolon(;).
+All SQL statements should end with semicolon(;).
 All the references to identifiers should contain the schema name.
 Do not add database for local objects.
 Respect CASE used in identifiers and columns definition.
@@ -100,7 +100,7 @@ When joining, use aliases for the tables and identify all the columns with their
 
 source control
 =========
-Before commit any change validate that your scritps are not causing errors/warnings in the solution.
+Before commit any change validate that your scripts are not causing errors/warnings in the solution.
 
 
 Warning	459		SQL71562: Procedure: [dbo].[usp_get_my_station_photos_pages] contains an unresolved reference to an object. Either the object does not exist or the reference is ambiguous because it could refer to any of the following objects: [Gasbuddy].[dbo].[station_master_photo].[sp]::[stationId] or [Gasbuddy].[dbo].[station_master_photo].[stationId].	C:\GasBuddyDBs\gb-sql-server-db\GBPhotos\dbo\Stored Procedures\usp_get_my_station_photos_pages.sql	46	18	GBPhotos
