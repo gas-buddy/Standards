@@ -1,12 +1,11 @@
 GasBuddy SQL Standards
-==========
+======================
 
-
-naming
-========
-SQL views, indices, and stored procedures all being with a prefix which indicates their type.
+Naming
+======
+SQL views, indices, and stored procedures all begin with a prefix which indicates their type.
 Index names contain the name of the table followed by the columns in the index as well as other important information (e.g. "filtered", "covering", etc.). 
-Stored procedure names contain the table name, followed by the operation, followed by the version number.
+Stored procedure names contain the primary table name, followed by the operation, followed by the version number.
 
 ```
 views: 		[dbo].[vw_station_with_prices]
@@ -16,7 +15,7 @@ stored procedure with a list of objects as output: 	[dbo].[usp_member_comments_l
 versioning:	[dbo].[usp_member_comments_list_by_member_id_v2]
 ```
 
-SQL tables and view are plural, lower case, underscore separated. 
+SQL tables and view are **plural, lower case and underscore separated**. 
 
 ```
 [dbo].[awards]
@@ -24,11 +23,9 @@ SQL tables and view are plural, lower case, underscore separated.
 [dbo].[member_comments]
 ```
 
-
-formatting
-=========
-All T-SQL reserved words are uppercase.
-All identifiers should be delimited by square brackets.
+Formatting
+==========
+All T-SQL reserved words are **uppercase**. All identifiers should be delimited by **square brackets**.
 
 ```
 CREATE TABLE [dbo].[price_hist2](
@@ -45,10 +42,9 @@ CREATE TABLE [dbo].[price_hist2](
 	[member_id] [VARCHAR](30) NOT NULL,
 	[bad_price] [BIT] NOT NULL
 );
-
 ```
 
-For stored procedures: Add description to the script.
+For stored procedures: Add a comment header (as below) to the script.
 All SQL statements should end with semicolon(;).
 All the references to identifiers should include the schema name.
 Do not add database for local objects.
@@ -58,53 +54,58 @@ Commas are placed at the end of the column name.
 
 ```
 -- =============================================
--- Author:		[Name]
+-- Author:      [Name]
 -- Create date: [mm/dd/yyyy]
 -- Description:	[add description]
 -- Update Log:
---	VERSION		DATE			AUTHOR		DESCRIPTION
---	 V#			 yyyy-mm-dd		 <name>		 <What changed?>
+-- VERSION  DATE        AUTHOR     DESCRIPTION
+-- V#       yyyy-mm-dd	<name>     <What changed?>
 -- =============================================
 CREATE PROCEDURE [dbo].[usp_fuel_products_get_by_id] 
-	@id INT
+  @id INT
 AS
 BEGIN
-	SET NOCOUNT ON;
+  SET NOCOUNT ON;
 
-	SELECT		id,
-				display_name,
-				fuel_group_id,
-				octane_id,
-				ethanol_id,
-				category_id
-	FROM 		[dbo].[fuel_products] WITH(NOLOCK)
-	WHERE 		id = @id;
-
+  SELECT id,
+    display_name,
+    fuel_group_id,
+    octane_id,
+    ethanol_id,
+    category_id
+  FROM
+    [dbo].[fuel_products] WITH(NOLOCK)
+  WHERE
+    id = @id;
 END
-
 ```
 
-When joining, use aliases for the tables and identify all the columns with their corresponding alias.
+When joining, use meaningful aliases for the tables and identify all columns with their corresponding alias.
+Do not use "SELECT *".
 
 ```
-	SELECT		srdt.sm_id, 
-				srdt.rating_value,
-				SUM(srdt.total_ratings) AS 'total_ratings'
-	FROM		[dbo].[station_rating_day_totals] srdt WITH (NOLOCK)
-	INNER JOIN	@sm_ids smids ON smids.id = srdt.sm_id
-	WHERE		srdt.day BETWEEN @min_date AND @max_date
-				AND srdt.rating_category_id = @rating_category_id
-	GROUP BY	srdt.sm_id, srdt.rating_value
-	ORDER BY	srdt.sm_id;
+  SELECT srdt.sm_id, 
+    srdt.rating_value,
+    SUM(srdt.total_ratings) AS 'total_ratings'
+  FROM
+    [dbo].[station_rating_day_totals] srdt WITH (NOLOCK)
+    INNER JOIN @sm_ids smids ON smids.id = srdt.sm_id
+  WHERE
+    srdt.day BETWEEN @min_date AND @max_date
+    AND srdt.rating_category_id = @rating_category_id
+  GROUP BY
+    srdt.sm_id, srdt.rating_value
+  ORDER BY
+    srdt.sm_id;
 ```
 
+Source Control
+==============
+Before making a pull request for your change, validate that your scripts are not causing errors/warnings in the solution.
+At some point we will put CI infrastructure around this, but for now we all need to do it manually.
 
-
-source control
-=========
-Before commit any change validate that your scripts are not causing errors/warnings in the solution.
-
-
+Common Warnings
+---------------
 Warning	459		SQL71562: Procedure: [dbo].[usp_get_my_station_photos_pages] contains an unresolved reference to an object. Either the object does not exist or the reference is ambiguous because it could refer to any of the following objects: [Gasbuddy].[dbo].[station_master_photo].[sp]::[stationId] or [Gasbuddy].[dbo].[station_master_photo].[stationId].	C:\GasBuddyDBs\gb-sql-server-db\GBPhotos\dbo\Stored Procedures\usp_get_my_station_photos_pages.sql	46	18	GBPhotos
 
 ```
