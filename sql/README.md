@@ -51,7 +51,7 @@ Do not add database for local objects.
 Respect CASE used in identifiers and columns definition.
 Use a new line per column in the select.
 Commas are placed at the end of the column name.
-Use SCOPE_IDENTITY() to retrieve identity values.
+Use SCOPE_IDENTITY() to get the last identity value.
 
 
 ```
