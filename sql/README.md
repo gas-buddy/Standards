@@ -51,6 +51,8 @@ Do not add database for local objects.
 Respect CASE used in identifiers and columns definition.
 Use a new line per column in the select.
 Commas are placed at the end of the column name.
+Use SCOPE_IDENTITY() to retrieve identity values.
+
 
 ```
 -- =============================================
@@ -103,6 +105,12 @@ Source Control
 ==============
 Before making a pull request for your change, validate that your scripts are not causing errors/warnings in the solution.
 At some point we will put CI infrastructure around this, but for now we all need to do it manually.
+If files where added or deleted make sure to save the project.
+
+File format
+---------------
+Do not include USE or SET statementes outside of the Stored Procedure.
+For external references, replace the database name with the corresponding variable.
 
 Common Warnings
 ---------------
